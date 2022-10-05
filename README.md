@@ -1,5 +1,5 @@
 # iwr6843aop_pub
-Python ROS2 pointcloud retriever for IWR6843ISKEVM mmWave device
+Python ROS2 pointcloud retriever for IWR6843ISK mmWave device
 
 Derived from: https://github.com/nhma20/iwr6843aop_pub
 
