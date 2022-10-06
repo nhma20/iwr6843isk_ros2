@@ -11,9 +11,9 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
 
 - ROS2 (Ubuntu 18.04.5 & dashing tested  // Ubuntu 20.04.3 & foxy tested)
 - Python3 (3.6.9 & 3.8.10 tested)
-- IWR6843ISK mmWave radar device flashed with out-of-box firmware (either from this repo or inside downloaded mmwave_industrial_toolbox_x_x_x/labs/Out_Of_Box_Demo/prebuilt_binaries/ folder. Use uniflash to flash EVM (https://training.ti.com/hardware-setup-iwr6843aop)). Set up switches as seen here:
+- IWR6843ISK mmWave radar device flashed with out-of-box firmware (either from this repo or inside downloaded mmwave_industrial_toolbox_x_x_x/labs/Out_Of_Box_Demo/prebuilt_binaries/ folder. Use uniflash to flash device (https://training.ti.com/hardware-setup-iwr6843isk-and-iwr6843isk-ods)). Set up switches as seen here:
 
-<img src="https://user-images.githubusercontent.com/76950970/194248928-3aab1551-55ec-4969-842a-8e87486cdbc7.jpg" width="300">
+<img src="https://user-images.githubusercontent.com/76950970/194248928-3aab1551-55ec-4969-842a-8e87486cdbc7.jpg" width="350">
 
 
 
@@ -38,8 +38,8 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-0. Plug in IWR6843ISKEVM, make sure ports match (default /dev/ttyUSB0,1)
-1. Run ros package (make sure /opt/ros/dashing/setup.bash and ~/dev_ws/install/setup.bash are sourced)
+0. Plug in IWR6843ISKEVM, make sure ports match (default /dev/ttyUSB0, /dev/ttyUSB1)
+1. Run ros package (make sure /opt/ros/dashing/setup.bash and <ros2_workspace>/install/setup.bash are sourced)
    ```sh
    ros2 run iwr6843isk_pub pcl_pub
    ```
@@ -60,6 +60,6 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
 
 All functional code (for the purpose of this ROS package) is located at
    ```sh
-   /iwr6843isk_pub/iwr6843isk_pub/publisher_member_function.py
+   <ros2_workspace>/src/iwr6843isk_ros2/iwr6843isk_pub/publisher_member_function.py
    ```
 Two .cfg files are provided which dictate the functionality of the mmWave device. More profiles can be made with the mmWave Demo Visualizer tool: https://dev.ti.com/gallery/view/mmwave/mmWave_Demo_Visualizer/ver/3.5.0/
