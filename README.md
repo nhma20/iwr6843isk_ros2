@@ -13,7 +13,9 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
 - Python3 (3.6.9 & 3.8.10 tested)
 - IWR6843ISK mmWave radar device flashed with out-of-box firmware (either from this repo or inside downloaded mmwave_industrial_toolbox_x_x_x/labs/Out_Of_Box_Demo/prebuilt_binaries/ folder. Use uniflash to flash EVM (https://training.ti.com/hardware-setup-iwr6843aop)). Set up switches as seen here:
 
-<img src="https://user-images.githubusercontent.com/76950970/194248928-3aab1551-55ec-4969-842a-8e87486cdbc7.jp3" width="300">
+<img src="https://user-images.githubusercontent.com/76950970/194248928-3aab1551-55ec-4969-842a-8e87486cdbc7.jpg" width="300">
+
+
 
 ### Installation
 
