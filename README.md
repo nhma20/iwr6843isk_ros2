@@ -1,4 +1,7 @@
 # iwr6843aop_pub
+
+![mmw_pcl_gif](https://user-images.githubusercontent.com/76950970/194247603-18e9031a-7d34-4747-9926-9d35d6e3df4e.gif)
+
 Python ROS2 pointcloud retriever for IWR6843ISK mmWave device
 
 Derived from: https://github.com/nhma20/iwr6843aop_pub
@@ -6,8 +9,12 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
 
 ### Prerequisites
 
-ROS2 (Ubuntu 20.04 dashing tested)
-Python3 (3.8 tested)
+- ROS2 (Ubuntu 18.04.5 & dashing tested  // Ubuntu 20.04.3 & foxy tested)
+- Python3 (3.6.9 & 3.8.10 tested)
+- IWR6843ISK mmWave radar device flashed with out-of-box firmware (either from this repo or inside downloaded mmwave_industrial_toolbox_x_x_x/labs/Out_Of_Box_Demo/prebuilt_binaries/ folder. Use uniflash to flash EVM (https://training.ti.com/hardware-setup-iwr6843aop)). Set up switches as seen here:
+
+![IMG_20221006_094800](https://user-images.githubusercontent.com/76950970/194248928-3aab1551-55ec-4969-842a-8e87486cdbc7.jpg)
+<img src="[https://your-image-url.type](https://user-images.githubusercontent.com/76950970/194248928-3aab1551-55ec-4969-842a-8e87486cdbc7.jp3)" width="300">
 
 ### Installation
 
