@@ -21,17 +21,17 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
 
 1. Clone the repo to workspace
    ```sh
-   cd ~/dev_ws/src/
+   cd ~/ros2_ws/src/
    ```
    ```sh
    git clone https://github.com/nhma20/iwr6843isk_pub.git
    ```
 2. Colcon build package
    ```sh
-   cd ~/dev_ws/
+   cd ~/ros2_ws/
    ```
    ```sh
-   colcon build
+   colcon build --packages-select iwr6843isk_pub
    ```
 
 
@@ -53,12 +53,12 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
    ```
 3. 'Add' a new display (lower left corner)
 4. Select 'By topic' ribbon
-5. Find 'iwr6843_scan/pcl PointCloud2' and add it
-6. (Optional) Set point size at PointCloud2 -> Size (m) to 0.25 for better clarity
+5. Find 'iwr6843_pcl PointCloud2' and add it
+6. (Optional) Set point size at PointCloud2 -> Size (m) to 0.1 for better clarity
 
 ## Modify
 
-All functional code (for the purpose of this ROS package) is located at
+All functional code (for the purpose of this ROS2 package) is located at
    ```sh
    <ros2_workspace>/src/iwr6843isk_ros2/iwr6843isk_pub/publisher_member_function.py
    ```
