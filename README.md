@@ -45,7 +45,7 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
    ```
    or with parameters:
    ```sh
-   ros2 run iwr6843isk_pub pcl_pub /dev/ttyUSB0 /dev/ttyUSB1
+   ros2 run iwr6843isk_pub pcl_pub /dev/ttyUSB0 /dev/ttyUSB1 /src/iwr6843isk_pub/cfg_files/30deg_Group_18m_30Hz.cfg
    ```
 2. Visualize with rviz
    ```sh
