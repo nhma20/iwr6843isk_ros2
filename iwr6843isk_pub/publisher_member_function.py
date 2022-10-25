@@ -403,7 +403,7 @@ def main(argv=None):
     orig_path = os.path.dirname(os.path.realpath(__file__))
     sep = "install/"
     separated = orig_path.split(sep, 1)[0]
-    cfg_path = separated + "src/iwr6843isk_pub/cfg_files/xwr68xx_profile_30Hz.cfg"
+    cfg_path = separated + "src/iwr6843isk_ros2/cfg_files/xwr68xx_profile_30Hz.cfg"
     
     if len(sys.argv) > 1:
         cli_port = sys.argv[1]
