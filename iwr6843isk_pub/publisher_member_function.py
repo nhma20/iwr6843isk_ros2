@@ -324,10 +324,6 @@ xyz_mutex = False # True = locked, false = open
 class MinimalPublisher(Node):
     def __init__(self):
         super().__init__('iwr6843_pcl_pub')
-        
-        self.publisher_ = self.create_publisher(PointCloud2, 'iwr6843_pcl', 10)
-        timer_period = float(ms_per_frame/1000)
-        self.timer = self.create_timer(timer_period, self.timer_callback)
 
         self.declare_parameter('data_port', '/dev/ttyUSB1')
         self.declare_parameter('cli_port', '/dev/ttyUSB0')
@@ -344,9 +340,16 @@ class MinimalPublisher(Node):
         global got_args
         got_args = True
 
+        global ms_per_frame
+        while ms_per_frame > 5000:
+            pass
+
+        self.publisher_ = self.create_publisher(PointCloud2, 'iwr6843_pcl', 10)
+        timer_period = float(ms_per_frame/1000)
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+
 
     def timer_callback(self):
-        print("Callback")
         global xyz_mutex, xyzdata
         while xyz_mutex == True:
             pass
@@ -401,12 +404,12 @@ class iwr6843_interface(object):
         print("cfg_path: ", cfg_path)
 
         detected_points=Detected_Points()
-        self.stream = detected_points.data_stream_iterator(cli_port,data_port, cfg_path)#'COM4','COM3',1000)
+        self.stream = detected_points.data_stream_iterator(cli_port,data_port, cfg_path)
 
         while 1:
             try:
                 self.update()
-                time.sleep(ms_per_frame/5000)  
+                time.sleep(ms_per_frame/5000)  # divide only by 2-10?
             except Exception as exception:
                 print(exception)
                 return
@@ -441,8 +444,7 @@ def main(argv=None):
     #     data_port = sys.argv[2]
     # if len(sys.argv) > 3:
     #     cfg_path = sys.argv[3]
-        
-    print("1")
+
     
     signal.signal(signal.SIGINT, ctrlc_handler)
 
@@ -450,14 +452,9 @@ def main(argv=None):
     iwr6843_interface_node = iwr6843_interface()
     get_data_thread = threading.Thread(target=iwr6843_interface_node.get_data)
     get_data_thread.start()
-    # time.sleep(1)
-    
-    print("2")
 
     rclpy.init()
     minimal_publisher = MinimalPublisher()
-
-    print("3")
 
     rclpy.spin(minimal_publisher)
     #shutdown
