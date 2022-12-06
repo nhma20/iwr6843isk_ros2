@@ -409,7 +409,7 @@ class iwr6843_interface(object):
         while 1:
             try:
                 self.update()
-                time.sleep(ms_per_frame/5000)  # divide only by 2-10?
+                time.sleep(ms_per_frame/2000) # sample twice as fast as radar output rate, feels smoother
             except Exception as exception:
                 print(exception)
                 return
