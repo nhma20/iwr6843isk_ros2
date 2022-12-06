@@ -38,14 +38,14 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-0. Plug in IWR6843ISKEVM, make sure ports match (default /dev/ttyUSB0, /dev/ttyUSB1)
-1. Run ros package (make sure /opt/ros/dashing/setup.bash and <ros2_workspace>/install/setup.bash are sourced)
+0. Plug in IWR6843ISK, make sure ports match (default /dev/ttyUSB0, /dev/ttyUSB1)
+1. Run ros package (make sure /opt/ros/<ros2_version>/setup.bash and <ros2_workspace>/install/setup.bash are sourced)
    ```sh
    ros2 run iwr6843isk_pub pcl_pub
    ```
-   or with parameters:
+   or with ROS2 parameters:
    ```sh
-   ros2 run iwr6843isk_pub pcl_pub /dev/ttyUSB0 /dev/ttyUSB1 /src/iwr6843isk_pub/cfg_files/30deg_Group_18m_30Hz.cfg
+   ros2 run iwr6843isk_pub pcl_pub --ros-args -p cli_port:=/dev/ttyUSB0 -p data_port:=/dev/ttyUSB1 -p cfg_path:=/home/nm/ros2_ws/src/iwr6843isk_ros2/cfg_files/xwr68xx_profile_30Hz.cfg
    ```
    When loading a cfg with a different antenna configuration than the previous, IWR6843AOP device must be power cycled - can be done easily by pressing the RST_SW switch, or simply unplugging and replugging the USB cable.
    
