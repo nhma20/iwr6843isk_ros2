@@ -243,7 +243,7 @@ class Detected_Points:
 
         self.MAGIC_WORD = b'\x02\x01\x04\x03\x06\x05\x08\x07'
         self.ti=TI(cli_loc=cli_loc,data_loc=data_loc,cfg_path=cfg_path)
-        self.interval=ms_per_frame/2000 # 1000 raise more?
+        self.interval=ms_per_frame/1000 # 1000 raise more?
         self.data=b''
         self.warn=0
 
