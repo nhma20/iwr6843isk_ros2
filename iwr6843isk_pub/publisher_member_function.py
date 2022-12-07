@@ -188,35 +188,6 @@ class TI:
        
         return (x,y,z,vel), idx
 
-    def _parse_msg_detected_points_side_info(self,byte_buffer, idx):
-        (snr,noise), idx = self._unpack(byte_buffer, idx, items=2, form='H')
-        return (snr,noise),idx
-
-    def _parse_msg_azimut_static_heat_map(self, byte_buffer, idx):
-        """ Parses the information of the azimuth heat map
-
-        """
-        (imag, real), idx = self._unpack(byte_buffer, idx, items=2, form='H')
-        return (imag, real), idx
-
-   
-    def _process_azimut_heat_map(self, byte_buffer):
-            """
-            热图
-            """
-            idx = byte_buffer.index(MAGIC_WORD)
-            header_data, idx = self._parse_header_data(byte_buffer, idx)    
-            # print(header_data,idx)
-            (tlv_type, tlv_length), idx = self._parse_header_tlv(byte_buffer, idx)
-            # print(tlv_type, tlv_length,idx)
-            azimuth_map = np.zeros((self.num_virtual_ant, self.config_params['numRangeBins'], 2),dtype=np.int16)
-            # azimuth_map = np.zeros((7, self.config_params['numRangeBins'], 2),dtype=np.int16)
-            for bin_idx in range(self.config_params['numRangeBins']):
-                # for ant in range(7):
-                for ant in range(self.num_virtual_ant):
-                    azimuth_map[ant][bin_idx][:], idx = self._parse_msg_azimut_static_heat_map(byte_buffer, idx)
-            return azimuth_map
-
     def _process_detected_points(self, byte_buffer):
             """
             点云
@@ -230,19 +201,13 @@ class TI:
             ####  tvl1  ####
             (tlv_type, tlv_length), idx = self._parse_header_tlv(byte_buffer, idx)
             num_points=int(tlv_length/16)
-            data=np.zeros((num_points,6),dtype=np.float)
+            data=np.zeros((num_points,4),dtype=np.float)
             for i in range(num_points):
                 ( x, y, z,vel), idx = self._parse_msg_detected_points(byte_buffer, idx)
                 data[i][0]=x
                 data[i][1]=y
                 data[i][2]=z
                 data[i][3]=vel
-            
-            (tlv_type, tlv_length), idx = self._parse_header_tlv(byte_buffer, idx)
-            for i in range(num_points):
-                (snr,noise), idx = self._parse_msg_detected_points_side_info(byte_buffer, idx)
-                data[i][4]=snr
-                data[i][5]=noise
 
             return data
     @staticmethod
@@ -276,7 +241,7 @@ class Detected_Points:
         
         MAGIC_WORD = b'\x02\x01\x04\x03\x06\x05\x08\x07'
         ti=TI(cli_loc=cli_loc,data_loc=data_loc,cfg_path=cfg_path)
-        interval=ms_per_frame/1000
+        interval=ms_per_frame/2000 # 1000
         data=b''
         warn=0
         while 1:
@@ -301,7 +266,6 @@ class Detected_Points:
             except:
                 continue
 
-            datatmp=data[idx1:idx2]
             data=data[idx2:]
             points=ti._process_detected_points(byte_buffer)
             ret=points[:,:3]
