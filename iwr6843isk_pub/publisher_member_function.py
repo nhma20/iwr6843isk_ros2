@@ -208,8 +208,8 @@ class TI:
                 data[i][1]=y
                 data[i][2]=z
                 data[i][3]=vel
-                data[i][4]=0
-                data[i][5]=0
+                # data[i][4]=0
+                # data[i][5]=0
 
             return data
     @staticmethod
@@ -239,37 +239,41 @@ class TI:
 
 class Detected_Points:
 
-    def data_stream_iterator(self,cli_loc=cli_port,data_loc=data_port, cfg_path=os.path.dirname(os.path.realpath(__file__)).replace("install/iwr6843aop_pub/lib/python3.8/site-packages/iwr6843aop_pub", "/src/iwr6843aop_pub/cfg_files") + "/" + "xwr68xx_profile_30Hz.cfg"):
+    def __init__(self,cli_loc=cli_port,data_loc=data_port, cfg_path=os.path.dirname(os.path.realpath(__file__)).replace("install/iwr6843aop_pub/lib/python3.8/site-packages/iwr6843aop_pub", "/src/iwr6843aop_pub/cfg_files") + "/" + "xwr68xx_profile_30Hz.cfg"):
+
+        self.MAGIC_WORD = b'\x02\x01\x04\x03\x06\x05\x08\x07'
+        self.ti=TI(cli_loc=cli_loc,data_loc=data_loc,cfg_path=cfg_path)
+        self.interval=ms_per_frame/2000 # 1000 raise more?
+        self.data=b''
+        self.warn=0
+
+
+    def data_stream_iterator(self):
         
-        MAGIC_WORD = b'\x02\x01\x04\x03\x06\x05\x08\x07'
-        ti=TI(cli_loc=cli_loc,data_loc=data_loc,cfg_path=cfg_path)
-        interval=ms_per_frame/2000 # 1000
-        data=b''
-        warn=0
         while 1:
 
-            time.sleep(interval)
-            byte_buffer=ti._read_buffer()
+            time.sleep(self.interval)
+            byte_buffer=self.ti._read_buffer()
             
             if(len(byte_buffer)==0):
-                warn+=1
+                self.warn+=1
             else:
-                warn=0
-            if(warn>100):#连续10次空读取则退出 / after 10 empty frames
+                self.warn=0
+            if(self.warn>100):#连续10次空读取则退出 / after 10 empty frames
                 print("Wrong")
                 break
         
-            data+=byte_buffer
+            self.data+=byte_buffer
         
             try:
-                idx1 = data.index(MAGIC_WORD)   
-                idx2=data.index(MAGIC_WORD,idx1+1)
+                idx1 = self.data.index(MAGIC_WORD)   
+                idx2 = self.data.index(MAGIC_WORD,idx1+1)
 
             except:
                 continue
 
-            data=data[idx2:]
-            points=ti._process_detected_points(byte_buffer)
+            self.data=self.data[idx2:]
+            points=self.ti._process_detected_points(byte_buffer)
             ret=points[:,:3]
 
             yield ret
@@ -281,7 +285,7 @@ class Detected_Points:
                 break
 
 
-        ti.close()
+        self.ti.close()
 
 
 xyzdata = []
@@ -369,16 +373,23 @@ class iwr6843_interface(object):
         print("data_port: ", data_port)
         print("cfg_path: ", cfg_path)
 
-        detected_points=Detected_Points()
-        self.stream = detected_points.data_stream_iterator(cli_port,data_port, cfg_path)
+        detected_points=Detected_Points(cli_port, data_port, cfg_path)
+        self.stream = detected_points.data_stream_iterator()
 
         while 1:
             try:
                 self.update()
                 time.sleep(ms_per_frame/2000) # sample twice as fast as radar output rate, feels smoother
+
             except Exception as exception:
+
+                global shut_down
+                if shut_down == 1:
+                    return
+
                 print(exception)
-                return
+                self.stream = detected_points.data_stream_iterator()
+                # return
 
 
 def ctrlc_handler(signum, frame):
