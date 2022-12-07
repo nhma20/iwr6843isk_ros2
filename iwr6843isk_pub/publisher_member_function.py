@@ -43,12 +43,13 @@ global cli_port
 cli_port = '/dev/ttyUSB0'
 global got_args
 got_args = False
+username = os.path.expanduser('~')
 global cfg_path
-cfg_path = '/~'
+cfg_path = username+'/ros2_ws/src/iwr6843isk_pub/cfg_files/xwr68xx_profile_30Hz.cfg'
 
 class TI:
     def __init__(self, sdk_version=3.4,  cli_baud=115200,data_baud=921600, num_rx=4, num_tx=3,
-                 verbose=False, connect=True, mode=0,cli_loc='COM4',data_loc='COM3', cfg_path=os.path.dirname(os.path.realpath(__file__)).replace("install/iwr6843isk_pub/lib/python3.8/site-packages/iwr6843isk_pub", "/src/iwr6843isk_pub/cfg_files") + "/" + "xwr68xx_profile_30Hz.cfg"):
+                 verbose=False, connect=True, mode=0,cli_loc="",data_loc="", cfg_path=""):
         super(TI, self).__init__()
         self.connected = False
         self.verbose = verbose
@@ -239,7 +240,7 @@ class TI:
 
 class Detected_Points:
 
-    def __init__(self,cli_loc=cli_port,data_loc=data_port, cfg_path=os.path.dirname(os.path.realpath(__file__)).replace("install/iwr6843aop_pub/lib/python3.8/site-packages/iwr6843aop_pub", "/src/iwr6843aop_pub/cfg_files") + "/" + "xwr68xx_profile_30Hz.cfg"):
+    def __init__(self,cli_loc=cli_port,data_loc=data_port, cfg_path=cfg_path):
 
         self.MAGIC_WORD = b'\x02\x01\x04\x03\x06\x05\x08\x07'
         self.ti=TI(cli_loc=cli_loc,data_loc=data_loc,cfg_path=cfg_path)
@@ -295,13 +296,13 @@ class MinimalPublisher(Node):
     def __init__(self):
         super().__init__('iwr6843_pcl_pub')
 
-        self.declare_parameter('data_port', '/dev/ttyUSB1')
-        self.declare_parameter('cli_port', '/dev/ttyUSB0')
-        self.declare_parameter('cfg_path', '/home/nm/uzh_ws/ros2_ws/src/iwr6843isk_ros2/cfg_files/xwr68xx_profile_25Hz_Elev_43m.cfg')
-        
         global cfg_path
         global data_port
         global cli_port
+
+        self.declare_parameter('data_port', data_port)
+        self.declare_parameter('cli_port', cli_port)
+        self.declare_parameter('cfg_path', cfg_path)        
 
         data_port = self.get_parameter('data_port').get_parameter_value().string_value
         cli_port = self.get_parameter('cli_port').get_parameter_value().string_value
@@ -409,19 +410,6 @@ def main(argv=None):
     global cfg_path
     global data_port
     global cli_port
-
-    # orig_path = os.path.dirname(os.path.realpath(__file__))
-    # sep = "install/"
-    # separated = orig_path.split(sep, 1)[0]
-    # cfg_path = separated + "src/iwr6843isk_ros2/cfg_files/xwr68xx_profile_30Hz.cfg"
-    
-    # if len(sys.argv) > 1:
-    #     cli_port = sys.argv[1]
-    # if len(sys.argv) > 2:
-    #     data_port = sys.argv[2]
-    # if len(sys.argv) > 3:
-    #     cfg_path = sys.argv[3]
-
     
     signal.signal(signal.SIGINT, ctrlc_handler)
 
