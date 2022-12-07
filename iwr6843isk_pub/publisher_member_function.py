@@ -45,7 +45,7 @@ global got_args
 got_args = False
 username = os.path.expanduser('~')
 global cfg_path
-cfg_path = username+'/ros2_ws/src/iwr6843isk_pub/cfg_files/xwr68xx_profile_30Hz.cfg'
+cfg_path = username+'/ros2_ws/src/iwr6843isk_ros2/cfg_files/xwr68xx_profile_30Hz.cfg'
 
 class TI:
     def __init__(self, sdk_version=3.4,  cli_baud=115200,data_baud=921600, num_rx=4, num_tx=3,
