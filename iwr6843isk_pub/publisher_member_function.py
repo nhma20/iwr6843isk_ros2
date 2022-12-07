@@ -201,13 +201,15 @@ class TI:
             ####  tvl1  ####
             (tlv_type, tlv_length), idx = self._parse_header_tlv(byte_buffer, idx)
             num_points=int(tlv_length/16)
-            data=np.zeros((num_points,4),dtype=np.float)
+            data=np.zeros((num_points,6),dtype=np.float)
             for i in range(num_points):
                 ( x, y, z,vel), idx = self._parse_msg_detected_points(byte_buffer, idx)
                 data[i][0]=x
                 data[i][1]=y
                 data[i][2]=z
                 data[i][3]=vel
+                data[i][4]=0
+                data[i][5]=0
 
             return data
     @staticmethod
