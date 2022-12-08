@@ -45,7 +45,7 @@ Derived from: https://github.com/nhma20/iwr6843aop_pub
    ```
    or with ROS2 parameters:
    ```sh
-   ros2 run iwr6843isk_pub pcl_pub /dev/ttyUSB0 /dev/ttyUSB1 /src/iwr6843isk_pub/cfg_files/30deg_Group_18m_30Hz.cfg
+   ros2 run iwr6843isk_pub pcl_pub --ros-args -p cli_port:=/dev/ttyUSB0 -p data_port:=/dev/ttyUSB1 -p cfg_path:=/home/nm/ros2_ws/src/iwr6843isk_ros2/cfg_files/90deg_noGroup_18m_30Hz.cfg
    ```
    or launch with default parameters:
    ```sh
